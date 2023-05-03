@@ -1,32 +1,43 @@
+import kivy
+from kivy.app import App
+from kivy.core.audio import SoundLoader
 import random
 from playsound import playsound
-from os.path import exists
+from kivy.uix.textinput import TextInput
 
-while True:
-    number = random.randint(1,10)
-    times = random.randint(1,10)
-    playsound("numbers/" + str(number) + ".wav")
-    playsound("times/" + str(times) + ".wav")
+class Paadas(App):
+    def build(self):
+        while True:
+            number = random.randint(1,10)
+            times = random.randint(1,10)
+            sound = SoundLoader.load("numbers/" + str(number) + ".wav")
+            if sound:
+                sound.play()
+            sound = SoundLoader.load("times/" + str(times) + ".wav")
+            if sound:
+                sound.play()
 
-    # listen to the answer
-    answer = input("Enter your answer: ")
+            # listen to the answer
+            answer = TextInput(focus=True)
 
-    # check answer
-    product = number * times
+            # check answer
+            product = number * times
 
-    if answer == str(product):
-        playsound("prompt/correct.wav")
-    else:
-        playsound("prompt/incorrect.wav")
-        print(answer)
-        fname = "numbers/" + answer + ".wav"
-        if exists(fname):
-            playsound(fname)
-        playsound("prompt/incorrect.wav")
+            if answer == str(product):
+                sound = SoundLoader.load("prompt/correct.wav")
+                if sound:
+                    sound.play()
+            else:
+                sound = SoundLoader.load("prompt/incorrect.wav")
+                if sound:
+                    sound.play()
+                print(answer)
+                sound = SoundLoader.load("numbers/" + answer + ".wav"
+                if sound:
+                    sound.play()
+                sound = SoundLoader.load("prompt/incorrect.wav")
+                if sound:
+                    sound.play()
 
-    playsound("numbers/" + str(number) + ".wav")
-    playsound("times/" + str(times) + ".wav")
-    product = number * times
-    fname = "numbers/" + str(product) + ".wav"
-    if exists(fname):
-        playsound(fname)
+if __name__ == '__main__':
+    Paadas().run()
